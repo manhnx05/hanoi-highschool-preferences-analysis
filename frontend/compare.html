@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>So sánh trường - Tuyển sinh THPT Hà Nội 2024</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+  <style>
+    .search-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 32px;
+    }
+    .search-input-group {
+      position: relative;
+    }
+    .search-input-group input {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: var(--radius-sm);
+      padding: 14px 48px 14px 16px;
+      font-size: 1rem;
+      width: 100%;
+      transition: var(--transition);
+    }
+    .search-input-group input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--glow-blue);
+    }
+    .search-icon {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+    }
+    .suggestions {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      margin-top: 8px;
+      max-height: 300px;
+      overflow-y: auto;
+      z-index: 100;
+      box-shadow: var(--shadow);
+    }
+    .suggestion-item {
+      padding: 12px 16px;
+      cursor: pointer;
+      transition: var(--transition);
+      border-bottom: 1px solid var(--border);
+    }
+    .suggestion-item:last-child {
+      border-bottom: none;
+    }
+    .suggestion-item:hover {
+      background: var(--bg);
+    }
+    .selected-schools {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+    .selected-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: var(--gradient);
+      color: #fff;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    .selected-chip button {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: #fff;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .selected-chip button:hover {
+      background: rgba(255,255,255,0.4);
+    }
+    .compare-table {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .compare-table table {
+      margin: 0;
+      width: 100%;
+    }
+    .compare-table th {
+      background: var(--bg-card2);
+      padding: 16px;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+    }
+    .compare-table td {
+      padding: 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      vertical-align: middle;
+    }
+    .compare-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+    .metric-label {
+      font-weight: 600;
+      color: var(--text);
+    }
+    .metric-value {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+    .best-value {
+      color: #10b981;
+    }
+    .chart-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin-bottom: 24px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top" id="mainNav">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+      <div class="brand-icon"><i class="fa-solid fa-chart-pie"></i></div>
+      <span class="brand-text">EduData <span class="brand-accent">Analytics</span></span>
+    </a>
+    <div class="navbar-nav ms-auto flex-row gap-2">
+      <a class="nav-link px-3" href="index.html"><i class="fa-solid fa-house me-1"></i>Trang chủ</a>
+      <a class="nav-link px-3" href="rankings.html"><i class="fa-solid fa-ranking-star me-1"></i>Xếp hạng</a>
+      <a class="nav-link px-3 active" href="compare.html"><i class="fa-solid fa-code-compare me-1"></i>So sánh</a>
+      <a class="nav-link px-3" href="advanced-analytics.html"><i class="fa-solid fa-chart-line me-1"></i>Phân tích</a>
+      <button class="btn btn-sm btn-outline-light ms-2" id="themeToggle">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero-section" style="padding: 60px 0 40px;">
+  <div class="container-fluid px-4">
+    <div class="text-center">
+      <p class="hero-label"><i class="fa-solid fa-code-compare me-2"></i>So sánh chi tiết</p>
+      <h1 class="hero-title">So sánh các Trường THPT<br><span class="gradient-text">Hà Nội 2024</span></h1>
+      <p class="hero-sub mx-auto" style="max-width: 600px;">
+        Chọn từ 2 đến 5 trường để so sánh các chỉ số tuyển sinh
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Search & Compare -->
+<section style="padding: 40px 0 70px;">
+  <div class="container-fluid px-4">
+    
+    <!-- Search Box -->
+    <div class="search-box" data-aos="fade-up">
+      <label class="filter-label mb-3">
+        <i class="fa-solid fa-magnifying-glass me-2"></i>Tìm kiếm trường (tối đa 5 trường)
+      </label>
+      <div class="search-input-group">
+        <input 
+          type="text" 
+          id="schoolSearch" 
+          placeholder="Nhập tên trường... VD: Phan Đình Phùng"
+          autocomplete="off"
+        />
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <div id="suggestions" class="suggestions" style="display:none"></div>
+      </div>
+      
+      <div class="selected-schools" id="selectedSchools"></div>
+      
+      <button class="btn btn-primary-custom mt-3" id="compareBtn" disabled>
+        <i class="fa-solid fa-chart-bar me-2"></i>So sánh
+      </button>
+    </div>
+
+    <!-- Comparison Results -->
+    <div id="comparisonResults" style="display:none">
+      
+      <!-- Comparison Table -->
+      <div class="compare-table" data-aos="fade-up">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:200px">Chỉ số</th>
+              <th id="schoolHeaders"></th>
+            </tr>
+          </thead>
+          <tbody id="comparisonTableBody"></tbody>
+        </table>
+      </div>
+
+      <!-- Charts -->
+      <div class="row g-4 mt-4">
+        <div class="col-lg-6" data-aos="fade-up">
+          <div class="chart-container">
+            <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:20px">
+              <i class="fa-solid fa-chart-bar me-2 text-primary"></i>So sánh Tỷ lệ chọi & Chỉ tiêu
+            </h3>
+            <canvas id="compareChart1" height="250"></canvas>
+          </div>
+        </div>
+        <div class="col-lg-6" data-aos="fade-up">
+          <div class="chart-container">
+            <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:20px">
+              <i class="fa-solid fa-chart-pie me-2 text-success"></i>So sánh Nguyện vọng
+            </h3>
+            <canvas id="compareChart2" height="250"></canvas>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="main-footer">
+  <div class="container-fluid px-4">
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <span class="brand-text"><span class="brand-accent">EduData</span> Analytics</span>
+        <p class="footer-sub mt-1">Phân tích dữ liệu tuyển sinh THPT Hà Nội 2024–2025</p>
+      </div>
+      <div class="col-md-6 text-md-end">
+        <p class="footer-sub">Data source: Sở GD&ĐT Hà Nội</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+const API = 'http://127.0.0.1:8000';
+let allSchools = [];
+let selectedSchools = [];
+let charts = {};
+
+document.addEventListener('DOMContentLoaded', async () => {
+  AOS.init({ duration: 700, once: true });
+  setupThemeToggle();
+  
+  // Load all schools
+  const res = await fetch(`${API}/api/schools`);
+  const data = await res.json();
+  allSchools = data.data;
+  
+  setupSearch();
+});
+
+function setupSearch() {
+  const input = document.getElementById('schoolSearch');
+  const suggestions = document.getElementById('suggestions');
+  
+  input.addEventListener('input', (e) => {
+    const query = e.target.value.trim().toLowerCase();
+    
+    if (query.length < 2) {
+      suggestions.style.display = 'none';
+      return;
+    }
+    
+    const matches = allSchools
+      .filter(s => s.name.toLowerCase().includes(query))
+      .filter(s => !selectedSchools.find(sel => sel.tt === s.tt))
+      .slice(0, 10);
+    
+    if (matches.length === 0) {
+      suggestions.style.display = 'none';
+      return;
+    }
+    
+    suggestions.innerHTML = matches.map(s => `
+      <div class="suggestion-item" data-id="${s.tt}">
+        <div style="font-weight:600">${s.name}</div>
+        <div style="font-size:0.85rem;color:var(--text-muted)">
+          Tỷ lệ chọi: ${s.ratio} | NV1: ${s.nv1.toLocaleString()}
+        </div>
+      </div>
+    `).join('');
+    
+    suggestions.style.display = 'block';
+    
+    suggestions.querySelectorAll('.suggestion-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const id = parseInt(item.getAttribute('data-id'));
+        addSchool(id);
+        input.value = '';
+        suggestions.style.display = 'none';
+      });
+    });
+  });
+  
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.search-input-group')) {
+      suggestions.style.display = 'none';
+    }
+  });
+}
+
+function addSchool(id) {
+  if (selectedSchools.length >= 5) {
+    alert('Chỉ có thể chọn tối đa 5 trường');
+    return;
+  }
+  
+  const school = allSchools.find(s => s.tt === id);
+  if (!school) return;
+  
+  selectedSchools.push(school);
+  renderSelectedSchools();
+  updateCompareButton();
+}
+
+function removeSchool(id) {
+  selectedSchools = selectedSchools.filter(s => s.tt !== id);
+  renderSelectedSchools();
+  updateCompareButton();
+  
+  if (selectedSchools.length < 2) {
+    document.getElementById('comparisonResults').style.display = 'none';
+  }
+}
+
+function renderSelectedSchools() {
+  const container = document.getElementById('selectedSchools');
+  container.innerHTML = selectedSchools.map(s => `
+    <div class="selected-chip">
+      <span>${s.name}</span>
+      <button onclick="removeSchool(${s.tt})">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+  `).join('');
+}
+
+function updateCompareButton() {
+  const btn = document.getElementById('compareBtn');
+  btn.disabled = selectedSchools.length < 2;
+  btn.onclick = compareSchools;
+}
+
+function compareSchools() {
+  if (selectedSchools.length < 2) return;
+  
+  renderComparisonTable();
+  renderComparisonCharts();
+  
+  document.getElementById('comparisonResults').style.display = 'block';
+  document.getElementById('comparisonResults').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function renderComparisonTable() {
+  const headers = document.getElementById('schoolHeaders');
+  headers.innerHTML = selectedSchools.map(s => 
+    `<th style="text-align:center">${s.name}</th>`
+  ).join('');
+  
+  const metrics = [
+    { label: 'Tỷ lệ chọi', key: 'ratio', format: v => v.toFixed(2), higher: true },
+    { label: 'Chỉ tiêu', key: 'quota', format: v => v.toLocaleString(), higher: true },
+    { label: 'Nguyện vọng 1', key: 'nv1', format: v => v.toLocaleString(), higher: true },
+    { label: 'Nguyện vọng 2', key: 'nv2', format: v => v.toLocaleString(), higher: true },
+    { label: 'Nguyện vọng 3', key: 'nv3', format: v => v.toLocaleString(), higher: true },
+    { label: 'Tổng hồ sơ', key: 'total', format: v => v.toLocaleString(), higher: true },
+  ];
+  
+  const tbody = document.getElementById('comparisonTableBody');
+  tbody.innerHTML = metrics.map(metric => {
+    const values = selectedSchools.map(s => s[metric.key]);
+    const bestValue = metric.higher ? Math.max(...values) : Math.min(...values);
+    
+    return `
+      <tr>
+        <td class="metric-label">${metric.label}</td>
+        ${selectedSchools.map(s => {
+          const value = s[metric.key];
+          const isBest = value === bestValue;
+          return `
+            <td style="text-align:center">
+              <span class="metric-value ${isBest ? 'best-value' : ''}">
+                ${metric.format(value)}
+                ${isBest ? ' <i class="fa-solid fa-crown" style="font-size:0.9rem"></i>' : ''}
+              </span>
+            </td>
+          `;
+        }).join('')}
+      </tr>
+    `;
+  }).join('');
+}
+
+function renderComparisonCharts() {
+  // Destroy existing charts
+  Object.values(charts).forEach(c => c.destroy());
+  charts = {};
+  
+  const colors = [
+    'rgba(59,130,246,0.8)',
+    'rgba(16,185,129,0.8)',
+    'rgba(139,92,246,0.8)',
+    'rgba(239,68,68,0.8)',
+    'rgba(245,158,11,0.8)',
+  ];
+  
+  // Chart 1: Ratio & Quota
+  const ctx1 = document.getElementById('compareChart1').getContext('2d');
+  charts.chart1 = new Chart(ctx1, {
+    type: 'bar',
+    data: {
+      labels: selectedSchools.map(s => s.name.length > 15 ? s.name.slice(0,15)+'...' : s.name),
+      datasets: [
+        {
+          label: 'Tỷ lệ chọi',
+          data: selectedSchools.map(s => s.ratio),
+          backgroundColor: colors[0],
+          yAxisID: 'y',
+        },
+        {
+          label: 'Chỉ tiêu',
+          data: selectedSchools.map(s => s.quota),
+          backgroundColor: colors[1],
+          yAxisID: 'y1',
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: { type: 'linear', position: 'left', title: { display: true, text: 'Tỷ lệ chọi' } },
+        y1: { type: 'linear', position: 'right', title: { display: true, text: 'Chỉ tiêu' }, grid: { drawOnChartArea: false } }
+      }
+    }
+  });
+  
+  // Chart 2: NV comparison
+  const ctx2 = document.getElementById('compareChart2').getContext('2d');
+  charts.chart2 = new Chart(ctx2, {
+    type: 'bar',
+    data: {
+      labels: selectedSchools.map(s => s.name.length > 15 ? s.name.slice(0,15)+'...' : s.name),
+      datasets: [
+        {
+          label: 'NV 1',
+          data: selectedSchools.map(s => s.nv1),
+          backgroundColor: colors[0],
+        },
+        {
+          label: 'NV 2',
+          data: selectedSchools.map(s => s.nv2),
+          backgroundColor: colors[1],
+        },
+        {
+          label: 'NV 3',
+          data: selectedSchools.map(s => s.nv3),
+          backgroundColor: colors[2],
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: { stacked: true },
+        y: { stacked: true }
+      }
+    }
+  });
+}
+
+function setupThemeToggle() {
+  const btn = document.getElementById('themeToggle');
+  let dark = true;
+  btn.addEventListener('click', () => {
+    dark = !dark;
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+    btn.innerHTML = dark ? '<i class="fa-solid fa-moon"></i>' : '<i class="fa-solid fa-sun"></i>';
+  });
+}
+</script>
+</body>
+</html>

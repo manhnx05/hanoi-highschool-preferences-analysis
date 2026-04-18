@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bảng Xếp Hạng - Tuyển sinh THPT Hà Nội 2024</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+  <style>
+    .ranking-tabs {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 8px;
+      margin-bottom: 32px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .ranking-tab {
+      flex: 1;
+      min-width: 140px;
+      padding: 12px 20px;
+      background: transparent;
+      border: none;
+      border-radius: var(--radius-sm);
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .ranking-tab:hover {
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+    }
+    .ranking-tab.active {
+      background: var(--gradient);
+      color: #fff;
+      box-shadow: 0 4px 16px var(--glow-blue);
+    }
+    .ranking-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin-bottom: 32px;
+      transition: var(--transition);
+    }
+    .ranking-card:hover {
+      border-color: rgba(255,255,255,0.14);
+      box-shadow: var(--shadow);
+    }
+    .ranking-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .ranking-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+    }
+    .ranking-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 0;
+    }
+    .ranking-subtitle {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin: 0;
+    }
+    .ranking-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .ranking-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      margin-bottom: 12px;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+    .ranking-item:hover {
+      background: var(--bg-card2);
+      border-color: var(--accent);
+      transform: translateX(4px);
+    }
+    .rank-badge {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+    .rank-badge.top1 {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(251,191,36,0.4);
+    }
+    .rank-badge.top2 {
+      background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(148,163,184,0.4);
+    }
+    .rank-badge.top3 {
+      background: linear-gradient(135deg, #fb923c 0%, #ea580c 100%);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(251,146,60,0.4);
+    }
+    .rank-badge.other {
+      background: var(--bg-card2);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+    .school-info {
+      flex: 1;
+    }
+    .school-name {
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .school-stats {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .stat-value {
+      font-weight: 600;
+      color: var(--text);
+    }
+    .highlight-value {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top" id="mainNav">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+      <div class="brand-icon"><i class="fa-solid fa-chart-pie"></i></div>
+      <span class="brand-text">EduData <span class="brand-accent">Analytics</span></span>
+    </a>
+    <div class="navbar-nav ms-auto flex-row gap-2">
+      <a class="nav-link px-3" href="index.html"><i class="fa-solid fa-house me-1"></i>Trang chủ</a>
+      <a class="nav-link px-3 active" href="rankings.html"><i class="fa-solid fa-ranking-star me-1"></i>Xếp hạng</a>
+      <a class="nav-link px-3" href="compare.html"><i class="fa-solid fa-code-compare me-1"></i>So sánh</a>
+      <a class="nav-link px-3" href="advanced-analytics.html"><i class="fa-solid fa-chart-line me-1"></i>Phân tích</a>
+      <button class="btn btn-sm btn-outline-light ms-2" id="themeToggle">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero-section" style="padding: 60px 0 40px;">
+  <div class="container-fluid px-4">
+    <div class="text-center">
+      <p class="hero-label"><i class="fa-solid fa-trophy me-2"></i>Bảng xếp hạng toàn diện</p>
+      <h1 class="hero-title">Top 20 Trường THPT<br><span class="gradient-text">Hà Nội 2024</span></h1>
+      <p class="hero-sub mx-auto" style="max-width: 600px;">
+        Xếp hạng theo nhiều tiêu chí: Tỷ lệ chọi, Nguyện vọng 1, 2, 3, Chỉ tiêu và Tổng hồ sơ
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Ranking Tabs -->
+<section style="padding: 40px 0;">
+  <div class="container-fluid px-4">
+    <div class="ranking-tabs" data-aos="fade-up">
+      <button class="ranking-tab active" data-category="ratio">
+        <i class="fa-solid fa-fire"></i>
+        <span>Tỷ lệ chọi</span>
+      </button>
+      <button class="ranking-tab" data-category="nv1">
+        <i class="fa-solid fa-star"></i>
+        <span>Nguyện vọng 1</span>
+      </button>
+      <button class="ranking-tab" data-category="nv2">
+        <i class="fa-solid fa-star-half-stroke"></i>
+        <span>Nguyện vọng 2</span>
+      </button>
+      <button class="ranking-tab" data-category="nv3">
+        <i class="fa-regular fa-star"></i>
+        <span>Nguyện vọng 3</span>
+      </button>
+      <button class="ranking-tab" data-category="quota">
+        <i class="fa-solid fa-users"></i>
+        <span>Chỉ tiêu</span>
+      </button>
+      <button class="ranking-tab" data-category="total">
+        <i class="fa-solid fa-file-lines"></i>
+        <span>Tổng hồ sơ</span>
+      </button>
+      <button class="ranking-tab" data-category="all">
+        <i class="fa-solid fa-crown"></i>
+        <span>Tất cả</span>
+      </button>
+    </div>
+
+    <!-- Rankings Container -->
+    <div id="rankingsContainer">
+      <div class="text-center py-5">
+        <div class="loading-spinner"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="main-footer">
+  <div class="container-fluid px-4">
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <span class="brand-text"><span class="brand-accent">EduData</span> Analytics</span>
+        <p class="footer-sub mt-1">Phân tích dữ liệu tuyển sinh THPT Hà Nội 2024–2025</p>
+      </div>
+      <div class="col-md-6 text-md-end">
+        <p class="footer-sub">Data source: Sở GD&ĐT Hà Nội</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+const API = 'http://127.0.0.1:8000';
+let currentCategory = 'ratio';
+
+document.addEventListener('DOMContentLoaded', () => {
+  AOS.init({ duration: 700, once: true });
+  setupThemeToggle();
+  setupTabs();
+  loadRankings('ratio');
+});
+
+function setupTabs() {
+  document.querySelectorAll('.ranking-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.ranking-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const category = tab.getAttribute('data-category');
+      currentCategory = category;
+      loadRankings(category);
+    });
+  });
+}
+
+async function loadRankings(category) {
+  const container = document.getElementById('rankingsContainer');
+  container.innerHTML = '<div class="text-center py-5"><div class="loading-spinner"></div></div>';
+
+  try {
+    const res = await fetch(`${API}/api/rankings?category=${category}&limit=20`);
+    const data = await res.json();
+    renderRankings(data, category);
+  } catch (e) {
+    container.innerHTML = '<div class="alert alert-danger">Không thể tải dữ liệu</div>';
+  }
+}
+
+function renderRankings(data, category) {
+  const container = document.getElementById('rankingsContainer');
+  
+  const configs = {
+    ratio: {
+      title: 'Top 20 Trường Cạnh Tranh Nhất',
+      subtitle: 'Xếp hạng theo tỷ lệ chọi (NV1 / Chỉ tiêu)',
+      icon: '🔥',
+      color: '#ef4444',
+      bg: 'rgba(239,68,68,0.15)',
+      key: 'by_ratio',
+      mainField: 'ratio',
+      mainLabel: 'Tỷ lệ chọi',
+      extraFields: [
+        { key: 'nv1', label: 'NV1', icon: 'file-signature' },
+        { key: 'quota', label: 'Chỉ tiêu', icon: 'users' }
+      ]
+    },
+    nv1: {
+      title: 'Top 20 Trường Nhiều Nguyện Vọng 1 Nhất',
+      subtitle: 'Xếp hạng theo số lượng hồ sơ nguyện vọng 1',
+      icon: '⭐',
+      color: '#3b82f6',
+      bg: 'rgba(59,130,246,0.15)',
+      key: 'by_nv1',
+      mainField: 'nv1',
+      mainLabel: 'NV1',
+      extraFields: [
+        { key: 'quota', label: 'Chỉ tiêu', icon: 'users' },
+        { key: 'ratio', label: 'Tỷ lệ', icon: 'fire' }
+      ]
+    },
+    nv2: {
+      title: 'Top 20 Trường Nhiều Nguyện Vọng 2 Nhất',
+      subtitle: 'Xếp hạng theo số lượng hồ sơ nguyện vọng 2',
+      icon: '🌟',
+      color: '#10b981',
+      bg: 'rgba(16,185,129,0.15)',
+      key: 'by_nv2',
+      mainField: 'nv2',
+      mainLabel: 'NV2',
+      extraFields: [
+        { key: 'nv1', label: 'NV1', icon: 'star' },
+        { key: 'nv3', label: 'NV3', icon: 'star' }
+      ]
+    },
+    nv3: {
+      title: 'Top 20 Trường Nhiều Nguyện Vọng 3 Nhất',
+      subtitle: 'Xếp hạng theo số lượng hồ sơ nguyện vọng 3',
+      icon: '✨',
+      color: '#8b5cf6',
+      bg: 'rgba(139,92,246,0.15)',
+      key: 'by_nv3',
+      mainField: 'nv3',
+      mainLabel: 'NV3',
+      extraFields: [
+        { key: 'nv1', label: 'NV1', icon: 'star' },
+        { key: 'nv2', label: 'NV2', icon: 'star' }
+      ]
+    },
+    quota: {
+      title: 'Top 20 Trường Có Chỉ Tiêu Cao Nhất',
+      subtitle: 'Xếp hạng theo số lượng chỉ tiêu tuyển sinh',
+      icon: '👥',
+      color: '#f59e0b',
+      bg: 'rgba(245,158,11,0.15)',
+      key: 'by_quota',
+      mainField: 'quota',
+      mainLabel: 'Chỉ tiêu',
+      extraFields: [
+        { key: 'nv1', label: 'NV1', icon: 'file-signature' },
+        { key: 'ratio', label: 'Tỷ lệ', icon: 'fire' }
+      ]
+    },
+    total: {
+      title: 'Top 20 Trường Nhận Nhiều Hồ Sơ Nhất',
+      subtitle: 'Xếp hạng theo tổng số hồ sơ (NV1 + NV2 + NV3)',
+      icon: '📊',
+      color: '#22d3ee',
+      bg: 'rgba(34,211,238,0.15)',
+      key: 'by_total',
+      mainField: 'total',
+      mainLabel: 'Tổng HS',
+      extraFields: [
+        { key: 'nv1', label: 'NV1', icon: 'star' },
+        { key: 'nv2', label: 'NV2', icon: 'star-half-stroke' },
+        { key: 'ratio', label: 'Tỷ lệ', icon: 'fire' }
+      ]
+    },
+    all: {
+      title: 'Tổng hợp Top 20 - Tất cả Tiêu chí',
+      subtitle: 'Xem tất cả các bảng xếp hạng cùng lúc',
+      icon: '👑',
+      color: '#a855f7',
+      bg: 'rgba(168,85,247,0.15)',
+      key: 'all',
+      mainField: 'ratio',
+      mainLabel: 'Tổng hợp',
+      extraFields: []
+    }
+  };
+
+  const config = configs[category];
+  
+  // If "all" category, render all rankings
+  if (category === 'all') {
+    const allCategories = ['ratio', 'nv1', 'nv2', 'nv3', 'quota', 'total'];
+    container.innerHTML = allCategories.map((cat, idx) => {
+      const cfg = configs[cat];
+      const schools = data[cfg.key] || [];
+      return renderSingleRanking(cfg, schools, idx);
+    }).join('');
+    return;
+  }
+  
+  // Single category
+  const schools = data[config.key] || [];
+  container.innerHTML = renderSingleRanking(config, schools, 0);
+}
+
+function renderSingleRanking(config, schools, delayIndex = 0) {
+  return `
+    <div class="ranking-card" data-aos="fade-up" data-aos-delay="${delayIndex * 100}">
+      <div class="ranking-header">
+        <div class="ranking-icon" style="background:${config.bg};color:${config.color}">
+          ${config.icon}
+        </div>
+        <div>
+          <h2 class="ranking-title">${config.title}</h2>
+          <p class="ranking-subtitle">${config.subtitle}</p>
+        </div>
+      </div>
+      <ul class="ranking-list">
+        ${schools.map((school, idx) => {
+          const rank = idx + 1;
+          const badgeClass = rank === 1 ? 'top1' : rank === 2 ? 'top2' : rank === 3 ? 'top3' : 'other';
+          const mainValue = school[config.mainField];
+          const formattedValue = config.mainField === 'ratio' 
+            ? mainValue.toFixed(2) 
+            : mainValue.toLocaleString();
+          
+          return `
+            <li class="ranking-item" onclick="viewSchool(${school.tt})">
+              <div class="rank-badge ${badgeClass}">${rank}</div>
+              <div class="school-info">
+                <div class="school-name">${school.name}</div>
+                <div class="school-stats">
+                  <div class="stat-item">
+                    <i class="fa-solid fa-${config.mainField === 'ratio' ? 'fire' : 'chart-simple'}"></i>
+                    <span class="stat-value highlight-value">${formattedValue}</span>
+                    <span>${config.mainLabel}</span>
+                  </div>
+                  ${config.extraFields.map(field => `
+                    <div class="stat-item">
+                      <i class="fa-solid fa-${field.icon}"></i>
+                      <span class="stat-value">${
+                        field.key === 'ratio' 
+                          ? school[field.key].toFixed(2) 
+                          : school[field.key].toLocaleString()
+                      }</span>
+                      <span>${field.label}</span>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+              <i class="fa-solid fa-chevron-right" style="color:var(--text-muted)"></i>
+            </li>
+          `;
+        }).join('')}
+      </ul>
+    </div>
+  `;
+}
+
+function viewSchool(id) {
+  window.location.href = `school-detail.html?id=${id}`;
+}
+
+function setupThemeToggle() {
+  const btn = document.getElementById('themeToggle');
+  let dark = false;
+
+  // Apply light mode by default on load
+  document.documentElement.setAttribute('data-theme', 'light');
+  btn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+
+  btn.addEventListener('click', () => {
+    dark = !dark;
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+    btn.innerHTML = dark ? '<i class="fa-solid fa-moon"></i>' : '<i class="fa-solid fa-sun"></i>';
+  });
+}
+</script>
+</body>
+</html>
