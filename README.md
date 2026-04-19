@@ -1,6 +1,6 @@
-# 🎓 EduData Analytics - Hanoi High School Admissions 2024
+# 🎓 EduData Analytics
 
-Phân tích toàn diện dữ liệu tuyển sinh lớp 10 THPT Hà Nội 2024-2025 với **120 trường công lập**.
+Comprehensive analysis of Hanoi High School Admissions 2024-2025 data for **120 public schools**.
 
 [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org/)
@@ -9,36 +9,66 @@ Phân tích toàn diện dữ liệu tuyển sinh lớp 10 THPT Hà Nội 2024-2
 
 ## 🚀 Quick Start
 
-### 1. Backend (FastAPI)
+### Option 1: Use Batch Files (Windows)
 ```bash
-cd backend
+start.bat    # Start both servers
+open.bat     # Open browsers
+stop.bat     # Stop all servers
+```
+
+### Option 2: Manual Start
+
+**Backend (FastAPI)**
+```bash
+cd server
 python -m uvicorn main:app --reload
 ```
-**URL**: http://127.0.0.1:8000
+→ http://127.0.0.1:8000
 
-### 2. Frontend (Next.js 14)
+**Frontend (Next.js)**
 ```bash
-cd frontend-nextjs
+cd client
 npm install
 npm run dev
 ```
-**URL**: http://localhost:3000
+→ http://localhost:3000
+
+## 📁 Project Structure
+
+```
+.
+├── server/              # FastAPI backend
+│   ├── main.py         # API endpoints
+│   ├── schools.csv     # 120 schools data
+│   └── requirements.txt
+│
+├── client/             # Next.js 14 frontend
+│   ├── app/           # Pages (App Router)
+│   ├── components/    # React components
+│   ├── lib/          # Utils & API client
+│   └── package.json
+│
+├── start.bat          # Start servers
+├── stop.bat           # Stop servers
+├── open.bat           # Open browsers
+└── README.md          # This file
+```
 
 ## 📊 Features
 
-### ✅ Trang chủ (Home Page)
-- **Hero Section** - Gradient effects, call-to-action buttons
+### ✅ Home Page
+- **Hero Section** - Gradient effects, CTAs
 - **6 KPI Cards** - Real-time statistics
-- **Interactive Charts** - Bar chart (Top 10), Pie chart (NV distribution)
-- **6 Insights Cards** - Data highlights and analysis
+- **Interactive Charts** - Bar (Top 10), Pie (NV distribution)
+- **6 Insights** - Data highlights
 - **Data Table** - Search, sort, 120 schools
-- **Dark/Light Theme** - Smooth theme toggle
-- **Responsive Design** - Mobile, tablet, desktop
+- **Dark/Light Theme** - Smooth toggle
+- **Responsive** - Mobile, tablet, desktop
 
 ### 📈 Data Analysis
-- Tỷ lệ chọi (Competition ratio)
-- Nguyện vọng 1, 2, 3 (Aspirations)
-- Chỉ tiêu tuyển sinh (Admission quota)
+- Competition ratio (Tỷ lệ chọi)
+- Aspirations NV1, NV2, NV3
+- Admission quota (Chỉ tiêu)
 - Statistical analysis
 - Correlation matrix
 - Regression analysis
@@ -51,33 +81,15 @@ npm run dev
 - **Styling**: Tailwind CSS
 - **Charts**: Recharts
 - **State**: Zustand
-- **Data Fetching**: TanStack Query (React Query)
+- **Data Fetching**: TanStack Query
 - **Theme**: next-themes
 - **Icons**: Lucide React
 
 ### Backend
 - **Framework**: FastAPI
-- **Data Processing**: Pandas
+- **Data**: Pandas
 - **Server**: Uvicorn
 - **API**: RESTful (15+ endpoints)
-
-## 📁 Project Structure
-
-```
-.
-├── backend/                 # FastAPI backend
-│   ├── main.py             # API endpoints
-│   ├── schools.csv         # 120 schools data
-│   └── requirements.txt    # Python dependencies
-│
-├── frontend-nextjs/        # Next.js 14 frontend
-│   ├── app/               # App Router pages
-│   ├── components/        # React components
-│   ├── lib/              # Utilities & API client
-│   └── package.json      # Node dependencies
-│
-└── README.md             # This file
-```
 
 ## 🔧 Installation
 
@@ -88,14 +100,14 @@ npm run dev
 
 ### Backend Setup
 ```bash
-cd backend
+cd server
 pip install -r requirements.txt
 python -m uvicorn main:app --reload
 ```
 
 ### Frontend Setup
 ```bash
-cd frontend-nextjs
+cd client
 npm install
 npm run dev
 ```
@@ -105,7 +117,7 @@ npm run dev
 ### Schools
 - `GET /api/schools` - Get all schools (with filters)
 - `GET /api/schools/{id}` - Get school by ID
-- `GET /api/school-detail/{id}` - Get detailed school info
+- `GET /api/school-detail/{id}` - Get detailed info
 
 ### Statistics
 - `GET /api/stats` - Overall statistics
@@ -118,43 +130,21 @@ npm run dev
 - `GET /api/top` - Top N schools
 - `GET /api/compare` - Compare schools
 
-**Full API Documentation**: http://127.0.0.1:8000/docs
-
-## 🎨 Screenshots
-
-### Home Page
-- Modern dashboard with KPIs, charts, and data table
-- Dark/Light theme support
-- Responsive design
-
-### Features
-- Real-time search and filtering
-- Interactive charts with Recharts
-- Smooth animations and transitions
-- Type-safe with TypeScript
-
-## 📈 Performance
-
-| Metric | Value |
-|--------|-------|
-| First Load | ~800ms |
-| Code Splitting | ✅ Automatic |
-| Type Safety | ✅ 100% |
-| SEO | ✅ Excellent (SSR) |
-| Lighthouse Score | 95+ |
+**API Documentation**: http://127.0.0.1:8000/docs
 
 ## 🧪 Testing
 
 ### Quick Test (5 minutes)
-1. Open http://localhost:3000
-2. Test search: Type "Phan" in search box
-3. Test sort: Click on "Tỷ lệ chọi" column
-4. Test theme: Click 🌙/☀️ icon
-5. Test responsive: Resize browser window
+1. Run `start.bat` or start servers manually
+2. Run `open.bat` or open http://localhost:3000
+3. Test search: Type "Phan" in search box
+4. Test sort: Click "Tỷ lệ chọi" column
+5. Test theme: Click 🌙/☀️ icon
+6. Test responsive: Resize browser
 
 ### Expected Results
 - ✅ 120 schools displayed
-- ✅ Search filters in real-time
+- ✅ Search filters real-time
 - ✅ Sort works on all columns
 - ✅ Theme toggles smoothly
 - ✅ Charts render correctly
@@ -168,30 +158,40 @@ npm run dev
 4. **Nhân Chính** - Ratio: 2.62
 5. **Cầu Giấy** - Ratio: 2.14
 
-### Overall Statistics
+### Statistics
 - Total Schools: **120**
 - Total Quota: **~80,000**
 - Total NV1: **~130,000**
 - Average Ratio: **~1.6**
 - Highly Competitive (≥2): **~40**
 
+## 📈 Performance
+
+| Metric | Value |
+|--------|-------|
+| First Load | ~800ms |
+| Code Splitting | ✅ Automatic |
+| Type Safety | ✅ 100% |
+| SEO | ✅ Excellent (SSR) |
+| Lighthouse | 95+ |
+
 ## 🚢 Deployment
 
-### Vercel (Recommended for Frontend)
+### Vercel (Frontend)
 ```bash
-cd frontend-nextjs
+cd client
 vercel
 ```
 
 ### Docker (Optional)
 ```bash
 # Backend
-docker build -t edudata-backend ./backend
-docker run -p 8000:8000 edudata-backend
+docker build -t edudata-server ./server
+docker run -p 8000:8000 edudata-server
 
 # Frontend
-docker build -t edudata-frontend ./frontend-nextjs
-docker run -p 3000:3000 edudata-frontend
+docker build -t edudata-client ./client
+docker run -p 3000:3000 edudata-client
 ```
 
 ## 🔧 Environment Variables
@@ -205,22 +205,22 @@ NEXT_PUBLIC_API_URL=http://127.0.0.1:8000
 
 ### Frontend not loading data
 ```bash
-# Check if backend is running
+# Check backend
 curl http://127.0.0.1:8000/api/schools
 
-# Restart backend
-cd backend
+# Restart
+cd server
 python -m uvicorn main:app --reload
 ```
 
 ### npm install errors
 ```bash
-cd frontend-nextjs
+cd client
 rm -rf node_modules package-lock.json
 npm install
 ```
 
-### Port already in use
+### Port in use
 ```bash
 # Backend (change port)
 uvicorn main:app --reload --port 8001
@@ -233,14 +233,14 @@ npm run dev -- -p 3001
 
 ### Add new page
 ```bash
-cd frontend-nextjs/app
+cd client/app
 mkdir new-page
 touch new-page/page.tsx
 ```
 
 ### Add new API endpoint
 ```python
-# backend/main.py
+# server/main.py
 @app.get("/api/new-endpoint")
 def new_endpoint():
     return {"message": "Hello"}
@@ -248,11 +248,11 @@ def new_endpoint():
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions welcome! Please submit a Pull Request.
 
 ## 📄 License
 
-MIT License - see LICENSE file for details
+MIT License
 
 ## 👨‍💻 Author
 
@@ -264,13 +264,6 @@ Built with ❤️ using Next.js 14 + FastAPI
 - **Backend**: http://127.0.0.1:8000
 - **API Docs**: http://127.0.0.1:8000/docs
 - **Repository**: https://github.com/manhnx05/hanoi-highschool-preferences-analysis
-
-## 📞 Support
-
-If you have any questions or issues:
-1. Check the API documentation
-2. Review the code comments
-3. Open an issue on GitHub
 
 ---
 
