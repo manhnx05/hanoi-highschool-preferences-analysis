@@ -12,6 +12,7 @@ const navItems = [
   { href: "/rankings", label: "Xếp hạng", icon: "🏆" },
   { href: "/compare", label: "So sánh", icon: "⚖️" },
   { href: "/analytics", label: "Phân tích", icon: "📊" },
+  { href: "/insights", label: "Data Science", icon: "🧠" },
 ];
 
 export function Navbar() {
