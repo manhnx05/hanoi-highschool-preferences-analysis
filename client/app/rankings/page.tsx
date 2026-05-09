@@ -2,14 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchSchools } from "@/lib/api";
+import { schoolsApi } from "@/lib/api";
 import { Trophy, Medal, Award, TrendingUp, TrendingDown } from "lucide-react";
 
 export default function RankingsPage() {
   const [mounted, setMounted] = useState(false);
-  const { data: schools = [], isLoading } = useQuery({
+  const { data: response, isLoading } = useQuery({
     queryKey: ["schools"],
-    queryFn: fetchSchools,
+    queryFn: () => schoolsApi.getAll(),
   });
 
   useEffect(() => {
@@ -32,9 +32,11 @@ export default function RankingsPage() {
     );
   }
 
+  const schools = response?.data || [];
+
   // Sort schools by total students (descending)
   const rankedSchools = [...schools].sort(
-    (a, b) => b.total_students - a.total_students
+    (a, b) => b.total - a.total
   );
 
   const getRankIcon = (rank: number) => {
@@ -60,7 +62,7 @@ export default function RankingsPage() {
 
           return (
             <div
-              key={school.school_id}
+              key={school.tt}
               className={`rounded-lg border p-4 transition-all hover:shadow-md ${
                 isTopThree ? "border-primary bg-primary/5" : "bg-card"
               }`}
@@ -71,16 +73,16 @@ export default function RankingsPage() {
                 </div>
 
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold">{school.school_name}</h3>
+                  <h3 className="text-lg font-semibold">{school.name}</h3>
                   <p className="text-sm text-muted-foreground">
-                    Mã: {school.school_id}
+                    Mã: {school.tt}
                   </p>
                 </div>
 
                 <div className="grid grid-cols-3 gap-6 text-center">
                   <div>
                     <div className="text-2xl font-bold text-primary">
-                      {school.total_students.toLocaleString()}
+                      {school.total.toLocaleString()}
                     </div>
                     <div className="text-xs text-muted-foreground">
                       Tổng HS

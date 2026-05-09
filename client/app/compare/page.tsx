@@ -2,18 +2,18 @@
 
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchSchools } from "@/lib/api";
+import { schoolsApi } from "@/lib/api";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { Search } from "lucide-react";
 
 export default function ComparePage() {
   const [mounted, setMounted] = useState(false);
-  const [selectedSchools, setSelectedSchools] = useState<string[]>([]);
+  const [selectedSchools, setSelectedSchools] = useState<number[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const { data: schools = [], isLoading } = useQuery({
+  const { data: response, isLoading } = useQuery({
     queryKey: ["schools"],
-    queryFn: fetchSchools,
+    queryFn: () => schoolsApi.getAll(),
   });
 
   useEffect(() => {
@@ -36,12 +36,14 @@ export default function ComparePage() {
     );
   }
 
+  const schools = response?.data || [];
+
   const filteredSchools = schools.filter((school) =>
-    school.school_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    school.school_id.toLowerCase().includes(searchTerm.toLowerCase())
+    school.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    school.tt.toString().includes(searchTerm)
   );
 
-  const toggleSchool = (schoolId: string) => {
+  const toggleSchool = (schoolId: number) => {
     if (selectedSchools.includes(schoolId)) {
       setSelectedSchools(selectedSchools.filter((id) => id !== schoolId));
     } else if (selectedSchools.length < 5) {
@@ -50,12 +52,12 @@ export default function ComparePage() {
   };
 
   const comparisonData = schools
-    .filter((school) => selectedSchools.includes(school.school_id))
+    .filter((school) => selectedSchools.includes(school.tt))
     .map((school) => ({
-      name: school.school_name.length > 20 
-        ? school.school_name.substring(0, 20) + "..." 
-        : school.school_name,
-      "Tổng HS": school.total_students,
+      name: school.name.length > 20 
+        ? school.name.substring(0, 20) + "..." 
+        : school.name,
+      "Tổng HS": school.total,
       "NV1": school.nv1,
       "NV2": school.nv2,
       "NV3": school.nv3,
@@ -89,13 +91,13 @@ export default function ComparePage() {
 
             <div className="max-h-[600px] space-y-2 overflow-y-auto">
               {filteredSchools.map((school) => {
-                const isSelected = selectedSchools.includes(school.school_id);
+                const isSelected = selectedSchools.includes(school.tt);
                 const canSelect = selectedSchools.length < 5 || isSelected;
 
                 return (
                   <button
-                    key={school.school_id}
-                    onClick={() => toggleSchool(school.school_id)}
+                    key={school.tt}
+                    onClick={() => toggleSchool(school.tt)}
                     disabled={!canSelect}
                     className={`w-full rounded-lg border p-3 text-left transition-all ${
                       isSelected
@@ -105,9 +107,9 @@ export default function ComparePage() {
                         : "cursor-not-allowed opacity-50"
                     }`}
                   >
-                    <div className="font-semibold">{school.school_name}</div>
+                    <div className="font-semibold">{school.name}</div>
                     <div className="text-sm text-muted-foreground">
-                      {school.school_id} • {school.total_students.toLocaleString()} HS
+                      {school.tt} • {school.total.toLocaleString()} HS
                     </div>
                   </button>
                 );

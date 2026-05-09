@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchSchools } from "@/lib/api";
+import { schoolsApi } from "@/lib/api";
 import {
   BarChart,
   Bar,
@@ -24,9 +24,9 @@ const COLORS = ["#8b5cf6", "#3b82f6", "#10b981", "#f59e0b", "#ef4444"];
 
 export default function AnalyticsPage() {
   const [mounted, setMounted] = useState(false);
-  const { data: schools = [], isLoading } = useQuery({
+  const { data: response, isLoading } = useQuery({
     queryKey: ["schools"],
-    queryFn: fetchSchools,
+    queryFn: () => schoolsApi.getAll(),
   });
 
   useEffect(() => {
@@ -49,8 +49,10 @@ export default function AnalyticsPage() {
     );
   }
 
+  const schools = response?.data || [];
+
   // Calculate statistics
-  const totalStudents = schools.reduce((sum, s) => sum + s.total_students, 0);
+  const totalStudents = schools.reduce((sum, s) => sum + s.total, 0);
   const totalNV1 = schools.reduce((sum, s) => sum + s.nv1, 0);
   const totalNV2 = schools.reduce((sum, s) => sum + s.nv2, 0);
   const totalNV3 = schools.reduce((sum, s) => sum + s.nv3, 0);
@@ -65,20 +67,20 @@ export default function AnalyticsPage() {
 
   // Top 10 schools by total students
   const top10Schools = [...schools]
-    .sort((a, b) => b.total_students - a.total_students)
+    .sort((a, b) => b.total - a.total)
     .slice(0, 10)
     .map((s) => ({
-      name: s.school_name.length > 15 ? s.school_name.substring(0, 15) + "..." : s.school_name,
-      students: s.total_students,
+      name: s.name.length > 15 ? s.name.substring(0, 15) + "..." : s.name,
+      students: s.total,
     }));
 
   // Distribution by school size
   const sizeDistribution = [
-    { range: "< 500", count: schools.filter((s) => s.total_students < 500).length },
-    { range: "500-1000", count: schools.filter((s) => s.total_students >= 500 && s.total_students < 1000).length },
-    { range: "1000-1500", count: schools.filter((s) => s.total_students >= 1000 && s.total_students < 1500).length },
-    { range: "1500-2000", count: schools.filter((s) => s.total_students >= 1500 && s.total_students < 2000).length },
-    { range: "> 2000", count: schools.filter((s) => s.total_students >= 2000).length },
+    { range: "< 500", count: schools.filter((s) => s.total < 500).length },
+    { range: "500-1000", count: schools.filter((s) => s.total >= 500 && s.total < 1000).length },
+    { range: "1000-1500", count: schools.filter((s) => s.total >= 1000 && s.total < 1500).length },
+    { range: "1500-2000", count: schools.filter((s) => s.total >= 1500 && s.total < 2000).length },
+    { range: "> 2000", count: schools.filter((s) => s.total >= 2000).length },
   ];
 
   return (
