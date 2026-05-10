@@ -177,11 +177,23 @@ npm run dev
 
 ## 🚢 Deployment
 
-### Vercel (Frontend)
-```bash
-cd client
-vercel
-```
+### Vercel (Recommended)
+
+**📖 Chi tiết xem file [DEPLOY.md](DEPLOY.md)**
+
+#### Quick Deploy
+
+**Backend (FastAPI)**
+1. Tạo project mới trên Vercel
+2. Import repository, chọn Root Directory: `server`
+3. Deploy → Lưu URL backend
+
+**Frontend (Next.js)**
+1. Tạo project mới trên Vercel
+2. Import repository, chọn Root Directory: `client`
+3. Thêm Environment Variable:
+   - `NEXT_PUBLIC_API_URL` = URL backend từ bước trên
+4. Deploy
 
 ### Docker (Optional)
 ```bash
