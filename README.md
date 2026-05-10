@@ -9,23 +9,14 @@ Comprehensive analysis of Hanoi High School Admissions 2024-2025 data for **120 
 
 ## 🚀 Quick Start
 
-### Option 1: Use Batch Files (Windows)
-```bash
-start.bat    # Start both servers
-open.bat     # Open browsers
-stop.bat     # Stop all servers
-```
-
-### Option 2: Manual Start
-
-**Backend (FastAPI)**
+### Start Backend (FastAPI)
 ```bash
 cd server
-python -m uvicorn main:app --reload
+python -m uvicorn main:app --reload --port 8000
 ```
 → http://127.0.0.1:8000
 
-**Frontend (Next.js)**
+### Start Frontend (Next.js)
 ```bash
 cd client
 npm install
@@ -48,9 +39,6 @@ npm run dev
 │   ├── lib/          # Utils & API client
 │   └── package.json
 │
-├── start.bat          # Start servers
-├── stop.bat           # Stop servers
-├── open.bat           # Open browsers
 └── README.md          # This file
 ```
 
@@ -135,12 +123,13 @@ npm run dev
 ## 🧪 Testing
 
 ### Quick Test (5 minutes)
-1. Run `start.bat` or start servers manually
-2. Run `open.bat` or open http://localhost:3000
-3. Test search: Type "Phan" in search box
-4. Test sort: Click "Tỷ lệ chọi" column
-5. Test theme: Click 🌙/☀️ icon
-6. Test responsive: Resize browser
+1. Start backend: `cd server && python -m uvicorn main:app --reload`
+2. Start frontend: `cd client && npm run dev`
+3. Open http://localhost:3000
+4. Test search: Type "Phan" in search box
+5. Test sort: Click "Tỷ lệ chọi" column
+6. Test theme: Click 🌙/☀️ icon
+7. Test responsive: Resize browser
 
 ### Expected Results
 - ✅ 120 schools displayed
