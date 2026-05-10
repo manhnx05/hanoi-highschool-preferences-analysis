@@ -177,23 +177,61 @@ npm run dev
 
 ## 🚢 Deployment
 
-### Vercel (Recommended)
+### Vercel Deployment (Recommended)
 
-**📖 Chi tiết xem file [DEPLOY.md](DEPLOY.md)**
+#### Step 1: Deploy Backend (FastAPI)
 
-#### Quick Deploy
+1. **Tạo project mới trên Vercel**
+   - Truy cập: https://vercel.com/new
+   - Import repository GitHub
+   - Chọn **Root Directory**: `server`
+   - Framework Preset: **Other**
 
-**Backend (FastAPI)**
-1. Tạo project mới trên Vercel
-2. Import repository, chọn Root Directory: `server`
-3. Deploy → Lưu URL backend
+2. **Cấu hình Build Settings**
+   ```
+   Build Command: (để trống)
+   Output Directory: (để trống)
+   Install Command: pip install -r requirements.txt
+   ```
 
-**Frontend (Next.js)**
-1. Tạo project mới trên Vercel
-2. Import repository, chọn Root Directory: `client`
-3. Thêm Environment Variable:
-   - `NEXT_PUBLIC_API_URL` = URL backend từ bước trên
-4. Deploy
+3. **Deploy & lưu URL**
+   - Click "Deploy"
+   - Lưu lại URL backend (VD: `https://your-backend.vercel.app`)
+   - Test: Truy cập `https://your-backend.vercel.app/docs`
+
+#### Step 2: Deploy Frontend (Next.js)
+
+1. **Tạo project mới trên Vercel**
+   - Import cùng repository GitHub
+   - Chọn **Root Directory**: `client`
+   - Framework Preset: **Next.js**
+
+2. **Cấu hình Build Settings**
+   ```
+   Build Command: npm run build
+   Output Directory: .next
+   Install Command: npm install
+   ```
+
+3. **Environment Variables**
+   - Key: `NEXT_PUBLIC_API_URL`
+   - Value: URL backend từ Step 1
+
+4. **Deploy**
+   - Click "Deploy"
+   - Frontend sẽ tự động kết nối với backend
+
+#### Step 3: Update CORS (nếu cần)
+
+Nếu gặp lỗi CORS, cập nhật `server/main.py`:
+```python
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://your-frontend.vercel.app"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+```
 
 ### Docker (Optional)
 ```bash
@@ -205,6 +243,29 @@ docker run -p 8000:8000 edudata-server
 docker build -t edudata-client ./client
 docker run -p 3000:3000 edudata-client
 ```
+
+### Deployment Checklist
+
+**Pre-Deployment:**
+- ✅ No TypeScript errors
+- ✅ All pages load correctly
+- ✅ API endpoints working
+- ✅ Dark/Light theme working
+- ✅ Responsive design tested
+
+**Post-Deployment Testing:**
+- Test `/docs` - API documentation
+- Test all pages: Home, Rankings, Compare, Analytics, Data Science
+- Test school detail pages
+- Test search and sort functionality
+- Test theme toggle
+- Test mobile responsive
+
+**Common Issues:**
+- **API not responding**: Check `NEXT_PUBLIC_API_URL` environment variable
+- **CORS error**: Update `allow_origins` in `server/main.py`
+- **Build failed**: Check build logs on Vercel dashboard
+- **404 errors**: Ensure Next.js App Router configured correctly
 
 ## 🔧 Environment Variables
 
