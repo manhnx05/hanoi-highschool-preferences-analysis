@@ -1,4 +1,4 @@
-# 🎓 EduData Analytics
+# EduData Analytics
 
 Comprehensive analysis of Hanoi High School Admissions 2024-2025 data for **120 public schools**.
 
@@ -7,7 +7,7 @@ Comprehensive analysis of Hanoi High School Admissions 2024-2025 data for **120 
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.136-green)](https://fastapi.tiangolo.com/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Start Backend (FastAPI)
 ```bash
@@ -24,7 +24,7 @@ npm run dev
 ```
 → http://localhost:3000
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 .
@@ -42,9 +42,9 @@ npm run dev
 └── README.md          # This file
 ```
 
-## 📊 Features
+## Features
 
-### ✅ Home Page
+### Home Page
 - **Hero Section** - Gradient effects, CTAs
 - **6 KPI Cards** - Real-time statistics
 - **Interactive Charts** - Bar (Top 10), Pie (NV distribution)
@@ -53,7 +53,7 @@ npm run dev
 - **Dark/Light Theme** - Smooth toggle
 - **Responsive** - Mobile, tablet, desktop
 
-### 📈 Data Analysis
+### Data Analysis
 - Competition ratio (Tỷ lệ chọi)
 - Aspirations NV1, NV2, NV3
 - Admission quota (Chỉ tiêu)
@@ -61,7 +61,7 @@ npm run dev
 - Correlation matrix
 - Regression analysis
 
-## 🎯 Tech Stack
+## Tech Stack
 
 ### Frontend
 - **Framework**: Next.js 14 (App Router)
@@ -79,7 +79,7 @@ npm run dev
 - **Server**: Uvicorn
 - **API**: RESTful (15+ endpoints)
 
-## 🔧 Installation
+## Installation
 
 ### Prerequisites
 - Python 3.8+
@@ -100,7 +100,7 @@ npm install
 npm run dev
 ```
 
-## 📊 API Endpoints
+## API Endpoints
 
 ### Schools
 - `GET /api/schools` - Get all schools (with filters)
@@ -120,7 +120,7 @@ npm run dev
 
 **API Documentation**: http://127.0.0.1:8000/docs
 
-## 🧪 Testing
+## Testing
 
 ### Quick Test (5 minutes)
 1. Start backend: `cd server && python -m uvicorn main:app --reload`
@@ -132,13 +132,13 @@ npm run dev
 7. Test responsive: Resize browser
 
 ### Expected Results
-- ✅ 120 schools displayed
-- ✅ Search filters real-time
-- ✅ Sort works on all columns
-- ✅ Theme toggles smoothly
-- ✅ Charts render correctly
+- All 120 schools displayed
+- Search filters real-time
+- Sort works on all columns
+- Theme toggles smoothly
+- Charts render correctly
 
-## 📊 Sample Data
+## Sample Data
 
 ### Top 5 Most Competitive Schools
 1. **Yên Hòa** - Ratio: 3.36
@@ -154,17 +154,17 @@ npm run dev
 - Average Ratio: **~1.6**
 - Highly Competitive (≥2): **~40**
 
-## 📈 Performance
+## Performance
 
 | Metric | Value |
 |--------|-------|
 | First Load | ~800ms |
-| Code Splitting | ✅ Automatic |
-| Type Safety | ✅ 100% |
-| SEO | ✅ Excellent (SSR) |
+| Code Splitting | Automatic |
+| Type Safety | 100% |
+| SEO | Excellent (SSR) |
 | Lighthouse | 95+ |
 
-## 🚢 Deployment
+## Deployment
 
 ### Vercel Deployment (Recommended)
 
@@ -236,11 +236,11 @@ docker run -p 3000:3000 edudata-client
 ### Deployment Checklist
 
 **Pre-Deployment:**
-- ✅ No TypeScript errors
-- ✅ All pages load correctly
-- ✅ API endpoints working
-- ✅ Dark/Light theme working
-- ✅ Responsive design tested
+- No TypeScript errors
+- All pages load correctly
+- API endpoints working
+- Dark/Light theme working
+- Responsive design tested
 
 **Post-Deployment Testing:**
 - Test `/docs` - API documentation
@@ -256,14 +256,14 @@ docker run -p 3000:3000 edudata-client
 - **Build failed**: Check build logs on Vercel dashboard
 - **404 errors**: Ensure Next.js App Router configured correctly
 
-## 🔧 Environment Variables
+## Environment Variables
 
 ### Frontend (.env.local)
 ```env
 NEXT_PUBLIC_API_URL=http://127.0.0.1:8000
 ```
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Frontend not loading data
 ```bash
@@ -291,7 +291,7 @@ uvicorn main:app --reload --port 8001
 npm run dev -- -p 3001
 ```
 
-## 📝 Development
+## Development
 
 ### Add new page
 ```bash
@@ -308,19 +308,19 @@ def new_endpoint():
     return {"message": "Hello"}
 ```
 
-## 🤝 Contributing
+## Contributing
 
 Contributions welcome! Please submit a Pull Request.
 
-## 📄 License
+## License
 
 MIT License
 
-## 👨‍💻 Author
+## Author
 
 Built with ❤️ using Next.js 14 + FastAPI
 
-## 🔗 Links
+## Links
 
 - **Frontend**: http://localhost:3000
 - **Backend**: http://127.0.0.1:8000
@@ -329,6 +329,6 @@ Built with ❤️ using Next.js 14 + FastAPI
 
 ---
 
-**Status**: ✅ Production Ready  
+**Status**: Production Ready  
 **Version**: 1.0.0  
-**Last Updated**: 2026-04-19
+**Last Updated**: 2026-05-10
