@@ -1,10 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useTheme } from "next-themes";
-import { Moon, Sun, BarChart3 } from "lucide-react";
+import { BarChart3 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -17,12 +15,6 @@ const navItems = [
 
 export function Navbar() {
   const pathname = usePathname();
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-lg">
@@ -52,22 +44,6 @@ export function Navbar() {
               {item.label}
             </Link>
           ))}
-
-          <button
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="ml-2 rounded-lg p-2 hover:bg-accent"
-            aria-label="Toggle theme"
-          >
-            {mounted ? (
-              theme === "dark" ? (
-                <Sun className="h-5 w-5" />
-              ) : (
-                <Moon className="h-5 w-5" />
-              )
-            ) : (
-              <div className="h-5 w-5" />
-            )}
-          </button>
         </div>
       </div>
     </nav>
