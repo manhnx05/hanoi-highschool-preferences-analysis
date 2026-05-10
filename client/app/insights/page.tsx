@@ -462,7 +462,7 @@ export default function InsightsPage() {
             Các trường có tỷ lệ chọi nằm ngoài khoảng IQR (Interquartile Range)
           </p>
           <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-            {outliers.map((school) => (
+            {outliers.map((school: { tt: number; name: string; ratio: number }) => (
               <div key={school.tt} className="rounded-lg border p-3">
                 <div className="font-semibold">{school.name}</div>
                 <div className="text-sm text-muted-foreground">
