@@ -319,7 +319,7 @@ export default function SchoolDetailPage() {
         <div className="rounded-xl border bg-card p-6">
           <h3 className="mb-4 text-lg font-semibold">Trường tương tự</h3>
           <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-            {similar_schools.map((similar) => (
+            {similar_schools.map((similar: { tt: number; name: string; ratio: number }) => (
               <Link
                 key={similar.tt}
                 href={`/school/${similar.tt}`}
